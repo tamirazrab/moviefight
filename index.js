@@ -9,9 +9,17 @@ const fetchData = async (itemSearch) => {
 	console.log(response.data);
 };
 
+let timerID = 0;
+const onInput = (event) => {
+	// This will fix the issue of sending request after every keystroke
+	// It will not send request until user stops typing.
+	// If user times new timeout is generated and next time gets cleared
+	// then generated again if user stops timeout will be called.
+	if (timerID) clearTimeout(timerID);
+	timerID = setTimeout(() => {
+		if (event.target.value !== "") fetchData(event.target.value);
+	}, 300);
+};
+
 const search = document.getElementById("movie-search");
-search.addEventListener("input", function (event) {
-	fetchData(event.target.value); // Data user types into input box
-	// Not ideal as search request being sent every time user hits single
-	// key stroke
-});
+search.addEventListener("input", onInput);
