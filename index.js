@@ -9,17 +9,6 @@ const fetchData = async (itemSearch) => {
 	console.log(response.data);
 };
 
-const debounce = (callBack, delay) => {
-	let timerId;
-	return (...arguments) => {
-		// Don't know which arguments are being passed here
-		if (timerId) clearTimeout(timerId);
-		timerId = setTimeout(() => {
-			callBack.apply(null, arguments);
-		}, delay);
-	};
-};
-
 // Should not debounce should be called like : debounce( fetchData( event.target.value ) , 500 );
 
 let timerID = 0;
