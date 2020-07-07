@@ -9,17 +9,27 @@ const fetchData = async (itemSearch) => {
 	console.log(response.data);
 };
 
+const debounce = (callBack, delay) => {
+	let timerId;
+	return (...arguments) => {
+		// Don't know which arguments are being passed here
+		if (timerId) clearTimeout(timerId);
+		timerId = setTimeout(() => {
+			callBack.apply(null, arguments);
+		}, delay);
+	};
+};
+
+// Should not debounce should be called like : debounce( fetchData( event.target.value ) , 500 );
+
 let timerID = 0;
 const onInput = (event) => {
 	// This will fix the issue of sending request after every keystroke
 	// It will not send request until user stops typing.
 	// If user times new timeout is generated and next time gets cleared
 	// then generated again if user stops timeout will be called.
-	if (timerID) clearTimeout(timerID);
-	timerID = setTimeout(() => {
-		if (event.target.value !== "") fetchData(event.target.value);
-	}, 300);
+	if (event.target.value !== "") fetchData(event.target.value);
 };
 
 const search = document.getElementById("movie-search");
-search.addEventListener("input", onInput);
+search.addEventListener("input", debounce(onInput, 500));
