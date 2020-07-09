@@ -14,6 +14,22 @@ const fetchData = async (itemSearch) => {
 };
 
 // Should not debounce should be called like : debounce( fetchData( event.target.value ) , 500 );
+const root = document.querySelector(".autocomplete");
+root.innerHTML = `
+	<label><strong> Search for movie </strong></label>
+	<input class="input" />
+	<div class = "dropdown" > 
+		<div class = "dropdown-menu" >
+			<div class = "dropdown-content results" >
+			
+			</div>
+		</div>
+	</div>
+`;
+
+const search = document.querySelector("input");
+const dropdown = document.querySelector(".dropdown");
+const resultsWrapper = document.querySelector(".results");
 
 let timerID = 0;
 const onInput = async (event) => {
@@ -22,19 +38,21 @@ const onInput = async (event) => {
 	// If user times new timeout is generated and next time gets cleared
 	// then generated again if user stops timeout will be called.
 	let movies;
+	dropdown.classList.add("is-active");
 	if (event.target.value !== "") movies = await fetchData(event.target.value);
+	else dropdown.classList.remove("is-active");
 	// Made await so that fetchData doesn't return promises instead of data actually needed.
 	for (let movie of movies) {
-		const div = document.createElement("div");
+		const item = document.createElement("a");
+		item.classList.add("dropdown-item");
 		// This functionality is not supported with '' single quotes.
-		div.innerHTML = `
+		item.innerHTML = `
 			<img src="${movie.Poster}" />
-			<h1> ${movie.Title} </h1>
+			<center> ${movie.Title} </center>
 		`;
 
-		document.getElementById("movie-output").appendChild(div);
+		resultsWrapper.appendChild(item);
 	}
 };
 
-const search = document.getElementById("movie-search");
 search.addEventListener("input", debounce(onInput, 500));
