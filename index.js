@@ -38,6 +38,9 @@ const onInput = async (event) => {
 	// If user times new timeout is generated and next time gets cleared
 	// then generated again if user stops timeout will be called.
 	let movies;
+
+	resultsWrapper.innerHTML = "";
+
 	dropdown.classList.add("is-active");
 	if (event.target.value !== "") movies = await fetchData(event.target.value);
 	else dropdown.classList.remove("is-active");
@@ -47,7 +50,7 @@ const onInput = async (event) => {
 		item.classList.add("dropdown-item");
 		// This functionality is not supported with '' single quotes.
 		item.innerHTML = `
-			<img src="${movie.Poster}" />
+			<img src="${movie.Poster === "N/A" ? "" : movie.Poster}" />
 			<center> ${movie.Title} </center>
 		`;
 
