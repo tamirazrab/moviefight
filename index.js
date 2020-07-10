@@ -43,7 +43,7 @@ const onInput = async (event) => {
 
 	dropdown.classList.add("is-active");
 	if (event.target.value !== "") movies = await fetchData(event.target.value);
-	else dropdown.classList.remove("is-active");
+
 	// Made await so that fetchData doesn't return promises instead of data actually needed.
 	for (let movie of movies) {
 		const item = document.createElement("a");
@@ -59,3 +59,6 @@ const onInput = async (event) => {
 };
 
 search.addEventListener("input", debounce(onInput, 500));
+document.addEventListener("click", (event) => {
+	if (!root.contains(event.target)) dropdown.classList.remove("is-active");
+});
