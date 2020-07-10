@@ -38,7 +38,10 @@ const onInput = async (event) => {
 	// If user times new timeout is generated and next time gets cleared
 	// then generated again if user stops timeout will be called.
 	let movies = await fetchData(event.target.value);
-	if (!movies.length) return;
+	if (!movies.length) {
+		dropdown.classList.remove("is-active");
+		return;
+	}
 	resultsWrapper.innerHTML = "";
 
 	dropdown.classList.add("is-active");
@@ -53,6 +56,12 @@ const onInput = async (event) => {
 			<center> ${movie.Title} </center>
 		`;
 
+		item.addEventListener("click", () => {
+			search.value = movie.Title; // setting movie title to userInput
+			dropdown.classList.remove("is-active"); // closing dropdown menu after user clicked on menu
+			onMovieSelect(movie); // func to extract full available information related to selected movie
+		});
+
 		resultsWrapper.appendChild(item);
 	}
 };
@@ -61,3 +70,14 @@ search.addEventListener("input", debounce(onInput, 500));
 document.addEventListener("click", (event) => {
 	if (!root.contains(event.target)) dropdown.classList.remove("is-active");
 });
+
+const onMovieSelect = async (movie) => {
+	const response = await axios.get("http://www.omdbapi.com/", {
+		params: {
+			apikey: "f2cb1c88",
+			i: movie.imdbID,
+		},
+	});
+
+	console.log(response.data);
+};
