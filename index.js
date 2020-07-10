@@ -37,12 +37,11 @@ const onInput = async (event) => {
 	// It will not send request until user stops typing.
 	// If user times new timeout is generated and next time gets cleared
 	// then generated again if user stops timeout will be called.
-	let movies;
-
+	let movies = await fetchData(event.target.value);
+	if (!movies.length) return;
 	resultsWrapper.innerHTML = "";
 
 	dropdown.classList.add("is-active");
-	if (event.target.value !== "") movies = await fetchData(event.target.value);
 
 	// Made await so that fetchData doesn't return promises instead of data actually needed.
 	for (let movie of movies) {
