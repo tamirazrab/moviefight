@@ -53,16 +53,38 @@ const onMovieSelect = async (movie, elementToPlaceContent, elementPlace) => {
 		},
 	});
 
-	elementPlace == 'left' ? leftMovieData = response.data : rightMovieData = response.data;
+	elementPlace === 'left' ? leftMovieData = response.data : rightMovieData = response.data;
+
+	console.log(elementToPlaceContent, elementPlace);
+	elementToPlaceContent.innerHTML = movieTemplate(response.data);
 
 	if (leftMovieData && rightMovieData) runComparison();
-
-
-	elementToPlaceContent.innerHTML = movieTemplate(response.data);
 };
 
 const runComparison = () => {
-	console.log('test');
+	const leftStats = document.querySelectorAll('#left-summary .notification');
+	const rightStats = document.querySelectorAll('#right-summary .notification');
+
+	leftStats.forEach((leftStatEachElement, index) => {
+		let rightStatEachElement = rightStats[index];
+
+		let leftStatValue = parseInt(leftStatEachElement.dataset.value);
+		let rightStatValue = parseInt(rightStatEachElement.dataset.value);
+
+		if (leftStatValue > rightStatValue) {
+			leftStatEachElement.classList.remove('is-info');
+			leftStatEachElement.classList.add('is-success');
+			rightStatEachElement.classList.remove('is-info');
+			rightStatEachElement.classList.add('is-danger');
+		} else {
+			leftStatEachElement.classList.remove('is-info');
+			leftStatEachElement.classList.add('is-danger');
+			rightStatEachElement.classList.remove('is-info');
+			rightStatEachElement.classList.add('is-success');
+		}
+
+	});
+
 }
 
 const movieTemplate = (movieDetails /* contains all details */) => {
@@ -97,7 +119,7 @@ const movieTemplate = (movieDetails /* contains all details */) => {
 	</div>
 	</article >
 
-	<article data-value = "${movieData.awards}" class="notification is-primary">
+	<article data-value = "${movieData.awards}" class="notification is-info">
 		<p class="title">${movieDetails.Awards}</p>
 		<p class="subtitle">Awards</p>
 	</article>
