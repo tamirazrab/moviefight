@@ -77,7 +77,7 @@ const movieTemplate = (movieDetails /* contains all details */) => {
 		) : 0,
 		awards: movieDetails.Awards !== 'N/A' ? movieDetails.Awards.split(' ').reduce((previousValue, word) => {
 			return isNaN(parseInt(word)) ? previousValue : previousValue + parseInt(word);
-		}) : 0
+		}, 0) : 0
 	};
 
 	console.log(movieData);
@@ -97,23 +97,23 @@ const movieTemplate = (movieDetails /* contains all details */) => {
 	</div>
 	</article >
 
-	<article class="notification is-primary">
+	<article data-value = "${movieData.awards}" class="notification is-primary">
 		<p class="title">${movieDetails.Awards}</p>
 		<p class="subtitle">Awards</p>
 	</article>
-	<article class="notification is-info">
+	<article data-value = "${movieData.dollars}" class="notification is-info">
 		<p class="title">${movieDetails.BoxOffice}</p>
 		<p class="subtitle">Box Office</p>
 	</article>
-	<article class="notification is-info">
+	<article data-value = "${movieData.metaScore}" class="notification is-info">
 		<p class="title">${movieDetails.Metascore}</p>
 		<p class="subtitle">Metascore</p>
 	</article>
-<article class="notification is-info">
+<article data-value = "${movieData.imdbRating}" class="notification is-info">
 	<p class="title">${movieDetails.imdbRating}</p>
 	<p class="subtitle">IMDB Rating</p>
 </article>
-<article class="notification is-info">
+<article data-value = "${movieData.imdbVotes}" class="notification is-info">
 	<p class="title">${movieDetails.imdbVotes}</p>
 	<p class="subtitle">IMDB Votes</p>
 </article>
