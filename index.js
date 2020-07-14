@@ -30,7 +30,7 @@ createAutoComplete({
 	onOptionSelect(movie) {
 		// Function to perform when user clicks on item from search
 		document.querySelector('.tutorial').classList.add('is-hidden');
-		onMovieSelect(movie, document.querySelector('#left-summary')); // Any application specific function could be called here.
+		onMovieSelect(movie, document.querySelector('#left-summary'), 'left'); // Any application specific function could be called here.
 	}
 });
 
@@ -40,12 +40,12 @@ createAutoComplete({
 	onOptionSelect(movie) {
 		// Function to perform when user clicks on item from search
 		document.querySelector('.tutorial').classList.add('is-hidden');
-		onMovieSelect(movie, document.querySelector('#right-summary')); // Any application specific function could be called here.
+		onMovieSelect(movie, document.querySelector('#right-summary'), 'right'); // Any application specific function could be called here.
 	}
 });
 
-
-const onMovieSelect = async (movie, elementToPlaceContent) => {
+let leftMovieData, rightMovieData;
+const onMovieSelect = async (movie, elementToPlaceContent, elementPlace) => {
 	const response = await axios.get("http://www.omdbapi.com/", {
 		params: {
 			apikey: "f2cb1c88",
@@ -53,10 +53,35 @@ const onMovieSelect = async (movie, elementToPlaceContent) => {
 		},
 	});
 
+	elementPlace == 'left' ? leftMovieData = response.data : rightMovieData = response.data;
+
+	if (leftMovieData && rightMovieData) runComparison();
+
+
 	elementToPlaceContent.innerHTML = movieTemplate(response.data);
 };
 
+const runComparison = () => {
+	console.log('test');
+}
+
 const movieTemplate = (movieDetails /* contains all details */) => {
+	// Taking out each value for each movie and converting them into their appropriate types instead of default string
+
+	const movieData = {
+		dollars: movieDetails.BoxOffice && movieDetails.BoxOffice !== 'N/A' ? parseInt(movieDetails.BoxOffice.replace(/\$/g, '').replace(/,/g, '')) : 0,
+		metaScore: movieDetails.Metascore !== 'N/A' ? parseInt(movieDetails.Metascore) : 0,
+		imdbRating: movieDetails.imdbRating !== 'N/A' ? parseFloat(movieDetails.imdbRating) : 0,
+		imdbVotes: movieDetails.imdbVotes !== 'N/A' ? parseInt(
+			movieDetails.imdbVotes.replace(/,/g, '')
+		) : 0,
+		awards: movieDetails.Awards !== 'N/A' ? movieDetails.Awards.split(' ').reduce((previousValue, word) => {
+			return isNaN(parseInt(word)) ? previousValue : previousValue + parseInt(word);
+		}) : 0
+	};
+
+	console.log(movieData);
+
 	return `
 	<article class="media">
 		<figure class="media-left">
