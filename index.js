@@ -123,23 +123,25 @@ const movieTemplate = (movieDetails /* contains all details */) => {
 		<p class="title">${movieDetails.Awards}</p>
 		<p class="subtitle">Awards</p>
 	</article>
+
 	<article data-value = "${movieData.dollars}" class="notification is-info">
 		<p class="title">${movieDetails.BoxOffice}</p>
 		<p class="subtitle">Box Office</p>
 	</article>
+
 	<article data-value = "${movieData.metaScore}" class="notification is-info">
 		<p class="title">${movieDetails.Metascore}</p>
 		<p class="subtitle">Metascore</p>
 	</article>
-<article data-value = "${movieData.imdbRating}" class="notification is-info">
-	<p class="title">${movieDetails.imdbRating}</p>
-	<p class="subtitle">IMDB Rating</p>
-</article>
-<article data-value = "${movieData.imdbVotes}" class="notification is-info">
-	<p class="title">${movieDetails.imdbVotes}</p>
-	<p class="subtitle">IMDB Votes</p>
-</article>
 
+	<article data-value = "${movieData.imdbRating}" class="notification is-info">
+		<p class="title">${movieDetails.imdbRating}</p>
+		<p class="subtitle">IMDB Rating</p>
+	</article>
 
-	`;
+	<article data-value = "${movieData.imdbVotes}" class="notification is-info">
+		<p class="title">${movieDetails.imdbVotes}</p>
+		<p class="subtitle">IMDB Votes</p>
+	</article>
+`;
 };
