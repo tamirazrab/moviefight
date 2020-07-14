@@ -1,3 +1,5 @@
+
+
 const createAutoComplete = ({ root, renderOption, onOptionSelect, inputValue, fetchData }) => {
     root.innerHTML = `
 	<label><strong> Search for movie </strong></label>
